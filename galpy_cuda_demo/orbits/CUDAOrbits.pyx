@@ -12,14 +12,14 @@ class CUDAOrbits:
         """
         Create an array of Orbit
 
-        :param x: x-locations
+        :param x: x-locations in AU
         :type x: np.ndarray
-        :param y: y-locations
+        :param y: y-locations in AU
         :type y: np.ndarray
-        :param vx: x-velocity
+        :param vx: x-velocity in AU/yr
         :type vx: np.ndarray
-        :param vy: y-velocity
-        :type cy: np.ndarray
+        :param vy: y-velocity in AU/yr
+        :type vy: np.ndarray
         """
         # make sure CUDA received float32 ndarray
         self.x = np.array(x).astype(np.float32)

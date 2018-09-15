@@ -24,7 +24,7 @@ Checklist:
 - You have Windows 10 x64 installed with compatible Nvidia graphics card (700 series or above)
 - You have the latest Nvidia driver and CUDA 9.2 installed as well as added to PATH
 - You have Python >=3.6 installed, I recommend Anaconda
-- You have Visual Studio 2017 update 6 installed with C/C++ support
+- You have Visual Studio 2017 Update 6 (toolset v14.13) installed with C/C++ support
 - You have downloaded this repository
 
 Run Windows CMD under the respository, first we need to launch the right Visual compiler supported by CUDA 9.2
@@ -91,13 +91,23 @@ Unlike `galpy`_, ``Orbits`` here is an array of orbits and being integrated on G
     import numpy as np
     import time
 
-    num_obj = 1000
-    o = Orbits(np.random.normal(0, 1, num_obj), np.random.normal(0, 1, num_obj),
-               np.random.normal(0, 1, num_obj), np.random.normal(0, 1, num_obj),
-               mode='Cuda')  # can be 'cpu' to run on multicored cpr
+    num_obj = 10000  # total number of object to create and integrate
+    x = np.random.normal(3, 0.1, num_obj)  # AU
+    y = np.random.normal(3, 0.1, num_obj)  # AU
+    vx = np.random.normal(20, 1, num_obj)  # AU/yr
+    vy = np.random.normal(20, 1, num_obj)  # AU/yr
+
+    # create cuda orbits and integrate
+    o_cuda = Orbits(x=x, y=y, vx=vx, vy=vy, mode='cuda')
     start = time.time()
-    o.integrate(steps=5000, dt=0.1)
-    print('Time Spent: ', time.time() - start, 's')
+    o_cuda.integrate(steps=5000, dt=0.01)
+    print('CUDA Time Spent: ', time.time() - start, 's')
+
+    # create numpy cpu orbits and integrate
+    o_cpu = Orbits(x=x, y=y, vx=vx, vy=vy, mode='cpu')
+    start = time.time()
+    o_cpu.integrate(steps=5000, dt=0.01)
+    print('CPU Time Spent: ', time.time() - start, 's')
 
 Performance Data
 =================

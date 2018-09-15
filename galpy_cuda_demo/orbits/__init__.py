@@ -20,4 +20,4 @@ def Orbits(x, y, vx, vy, mode='cuda'):
     elif mode.lower() == 'cpu':
         return npOrbits(x, y, vx, vy)
     else:
-        raise ValueError("Mode can only be either 'CUDA' or 'NUMPY'")
+        raise ValueError("Mode can only be either 'CUDA' or 'CPU'")
