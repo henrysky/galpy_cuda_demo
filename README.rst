@@ -37,7 +37,7 @@ Then we compile the ``.cu`` files to ``.lib``
 
 .. code-block:: bash
 
-    nvcc -lib -o CUDAOrbits.lib orbits/CUDAOrbits.cu
+    nvcc -lib -o CUDAOrbits.lib galpy_cuda_demo/orbits/CUDAOrbits.cu
 
 Build the python extension
 
@@ -51,8 +51,8 @@ Install the python package by
 
     python setup.py develop
 
-Linux
---------
+Linux (Not tested yet)
+----------------------------
 
 Checklist:
 
@@ -62,11 +62,11 @@ Checklist:
 - You have C/C++ compiler installed
 - You have downloaded this repository
 
-Run Terminal under the respository, first we compile the ``.cu`` files to ``.so``
+Run Terminal under the respository, first we compile the ``.cu`` files to ``.a``
 
 .. code-block:: bash
 
-    nvcc -lib -o CUDAOrbits.lib Orbits/CUDAOrbits.so
+    nvcc -lib -o CUDAOrbits.a galpy_cuda_demo/orbits/CUDAOrbits.cu
 
 Build the python extension
 
