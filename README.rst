@@ -2,7 +2,8 @@
 Introduction
 ==============
 
-Technology demonstration on how `galpy`_-ish orbit integration on Nvidia GPU via CUDA can be done.
+Technology demonstration on how `galpy`_-ish orbit integration on Nvidia GPU via CUDA can be done by Python C extension which uses CUDA.
+The purpose of this code is for demonstrating future possible galpy CUDA extensions.
 
 This python package integrate orbits by Euler's method in solar system under a point mass Sun while mimic `galpy`_ package structure
 
