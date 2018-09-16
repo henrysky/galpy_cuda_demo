@@ -37,7 +37,7 @@ __global__ void euler_integration(float *x, float *y, float *vx, float *vy, floa
 
 extern "C" int integrate_euler_cuda(float *x, float *y, float *vx, float *vy, float *x_out, float *y_out, float *vx_out,
                                     float *vy_out, int n, int steps, float dt) {
-    // dev_** variables mean variables on CUDA device
+    // dev_** variables for variables on CUDA device
     float *dev_x, *dev_y, *dev_vx, *dev_vy, *dev_x_out, *dev_y_out, *dev_vx_out, *dev_vy_out;
 
     // allocate the memory on the GPU (VRAM)
@@ -58,11 +58,12 @@ extern "C" int integrate_euler_cuda(float *x, float *y, float *vx, float *vy, fl
     cudaMemcpy(dev_vx, vx, n * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_vy, vy, n * sizeof(float), cudaMemcpyHostToDevice);
 
-    // CUDA Kkernel configuration: https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#programming-model
+    // CUDA kernel configuration: https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#programming-model
+    // set initial condition for Euler's method
     set_initial_cond<<<1024, 1024>>>(dev_x, dev_y, dev_vx, dev_vy, dev_x_out, dev_y_out, dev_vx_out, dev_vy_out,
                                      n, steps, dt);
 
-    // loop time, because time steps cannot be parallelized
+    // loop time, because time steps cannot be paralleled
     int cstep = 1;  // keep track of the time in integration
     while (cstep < steps){
         euler_integration<<<1024, 1024>>>(dev_x, dev_y, dev_vx, dev_vy, dev_x_out, dev_y_out, dev_vx_out, dev_vy_out,

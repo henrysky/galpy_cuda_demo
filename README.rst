@@ -2,7 +2,7 @@
 Introduction
 ==============
 
-Technology demonstration on how `galpy`_-ish orbit integration on Nvidia GPU via CUDA can be done by Python C extension which uses CUDA.
+Technology demonstration on how `galpy`_ orbit integration on Nvidia GPU via CUDA can be done by Python C extension which uses CUDA.
 The purpose of this code is for demonstrating future possible galpy CUDA extensions.
 
 This python package integrate orbits by Euler's method in solar system under a point mass Sun while mimic `galpy`_ package structure
@@ -12,20 +12,26 @@ This python package integrate orbits by Euler's method in solar system under a p
 Installation
 =================
 
-Installation should be easy on Windows and Linux supported by Nvidia
+Installation guide is provided below
 
-MacOS is not supported because Apple chosen AMD over Nvidia.
+Cross-platform checklist:
+---------------------------------
+
+- Compatible NVIDIA graphics card (`List of supported GPU`_)
+- You have the latest NVIDIA driver and CUDA 9.2 installed as well as added to PATH (`Installation guide`_)
+- You have Python >=3.6 installed, Anaconda is recommended (`Download Anaconda`_)
+- You have downloaded this repository (``git clone https://github.com/henrysky/galpy_cuda_demo``)
+
+.. _`List of supported GPU`: https://www.geforce.com/hardware/technology/cuda/supported-gpus
+.. _`Installation guide`: https://docs.nvidia.com/cuda/cuda-quick-start-guide/index.html#introduction
 
 Windows
 --------
 
-Checklist:
+- You have supported Windows (`List of supported Windows`_)
+- You have the latest Visual Studio 2017 installed with C/C++ toolset v14.13 or Visual Studio 2015
 
-- You have Windows 10 x64 installed with compatible Nvidia graphics card (700 series or above)
-- You have the latest Nvidia driver and CUDA 9.2 installed as well as added to PATH
-- You have Python >=3.6 installed, I recommend Anaconda
-- You have Visual Studio 2017 Update 6 (toolset v14.13) installed with C/C++ support
-- You have downloaded this repository
+.. _List of supported Windows: https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#system-requirements
 
 Run Windows CMD under the respository, first we need to launch the right Visual compiler supported by CUDA 9.2
 
@@ -33,52 +39,40 @@ Run Windows CMD under the respository, first we need to launch the right Visual 
 
     %comspec% /k "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.13
 
-Then we compile the ``.cu`` files to ``.lib``
-
-.. code-block:: bash
-
-    nvcc -lib -o CUDAOrbits.lib galpy_cuda_demo/orbits/CUDAOrbits.cu
-
-Build the python extension
-
-.. code-block:: bash
-
-    python setup.py build_ext -i -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include" -lcudart -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\lib\x64" --force clean
-
 Install the python package by
 
 .. code-block:: bash
 
     python setup.py develop
+
+To build wheels by
+
+.. code-block:: bash
+
+    python3 setup.py sdist bdist_wheel
 
 Linux (Not tested yet)
 ----------------------------
 
-Checklist:
-
-- You have reasonbly modern Linux installed with compatible Nvidia graphics card (700 series or above)
-- You have the latest Nvidia driver and CUDA 9.2 installed as well as added to PATH
-- You have Python >=3.6 installed, I recommend Anaconda
-- You have C/C++ compiler installed
-- You have downloaded this repository
-
-Run Terminal under the respository, first we compile the ``.cu`` files to ``.a``
-
-.. code-block:: bash
-
-    nvcc -lib -o CUDAOrbits.a galpy_cuda_demo/orbits/CUDAOrbits.cu
-
-Build the python extension
-
-.. code-block:: bash
-
-    python setup.py build_ext
+- You have supported Linux (`List of supported Linux`_)
+- You have supported GCC compiler (`List of supported GCC compiler`_ depending on your Linux distro)
 
 Install the python package by
 
 .. code-block:: bash
 
     python setup.py develop
+
+To build wheels by
+
+.. code-block:: bash
+
+    python3 setup.py sdist bdist_wheel
+
+.. _List of supported Linux: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
+.. _List of supported GCC compiler: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#system-requirements
+
+.. _`Download Anaconda`: https://www.anaconda.com/download/
 
 Usage
 =======
