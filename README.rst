@@ -49,7 +49,7 @@ To build wheels by
 
 .. code-block:: bash
 
-    python3 setup.py sdist bdist_wheel
+    python setup.py sdist bdist_wheel
 
 Linux (Not tested yet)
 ----------------------------
@@ -67,7 +67,7 @@ To build wheels by
 
 .. code-block:: bash
 
-    python3 setup.py sdist bdist_wheel
+    python setup.py sdist bdist_wheel
 
 .. _List of supported Linux: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
 .. _List of supported GCC compiler: https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#system-requirements
