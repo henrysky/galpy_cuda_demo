@@ -55,8 +55,8 @@ class npOrbits:
         vy_result[:, 0] = self.vy
 
         for t in range(0, steps - 1):
-            vx_result[:, t + 1] = vx_result[:, t] - dt * G * M_s * x_result[:, t] / R3(x_result[:, t], y_result[:, t])
-            vy_result[:, t + 1] = vy_result[:, t] - dt * G * M_s * y_result[:, t] / R3(x_result[:, t], y_result[:, t])
+            vx_result[:, t + 1] = vx_result[:, t] - dt * (G * M_s * x_result[:, t] / R3(x_result[:, t], y_result[:, t]))
+            vy_result[:, t + 1] = vy_result[:, t] - dt * (G * M_s * y_result[:, t] / R3(x_result[:, t], y_result[:, t]))
             x_result[:, t + 1] = x_result[:, t] + dt * vx_result[:, t + 1]
             y_result[:, t + 1] = y_result[:, t] + dt * vy_result[:, t + 1]
 
@@ -66,3 +66,7 @@ class npOrbits:
         self.vy = vy_result
 
         return None
+
+    @property
+    def R(self):
+        return np.sqrt(self.x**2 + self.y**2)

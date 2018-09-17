@@ -51,10 +51,10 @@ class CUDAOrbits:
         cdef np.ndarray[np.float32_t, ndim=1] y_c = self.y
         cdef np.ndarray[np.float32_t, ndim=1] vx_c = self.vx
         cdef np.ndarray[np.float32_t, ndim=1] vy_c = self.vy
-        cdef np.ndarray[np.float32_t, ndim=1] x_c_out = np.empty_like(np.repeat(x_c, steps))
-        cdef np.ndarray[np.float32_t, ndim=1] y_c_out = np.empty_like(np.repeat(x_c, steps))
-        cdef np.ndarray[np.float32_t, ndim=1] vx_c_out = np.empty_like(np.repeat(x_c, steps))
-        cdef np.ndarray[np.float32_t, ndim=1] vy_c_out = np.empty_like(np.repeat(x_c, steps))
+        cdef np.ndarray[np.float32_t, ndim=1] x_c_out = np.ones_like(np.repeat(x_c, steps))
+        cdef np.ndarray[np.float32_t, ndim=1] y_c_out = np.ones_like(np.repeat(x_c, steps))
+        cdef np.ndarray[np.float32_t, ndim=1] vx_c_out = np.ones_like(np.repeat(x_c, steps))
+        cdef np.ndarray[np.float32_t, ndim=1] vy_c_out = np.ones_like(np.repeat(x_c, steps))
 
         # integrate on CUDA GPU
         integrate_euler_cuda(&x_c[0], &y_c[0], &vx_c[0], &vy_c[0], &x_c_out[0], &y_c_out[0], &vx_c_out[0], &vy_c_out[0],
@@ -62,9 +62,13 @@ class CUDAOrbits:
 
         # CUDA should send back the whole array back to corresponding CPU memory address, we just need to put it in
         # the right python variable
-        self.x = x_c_out.reshape(self.num_of_obj, steps)
-        self.y = y_c_out.reshape(self.num_of_obj, steps)
-        self.vx = vx_c_out.reshape(self.num_of_obj, steps)
-        self.vy = vy_c_out.reshape(self.num_of_obj, steps)
+        self.x = x_c_out.reshape(steps, self.num_of_obj).T
+        self.y = y_c_out.reshape(steps, self.num_of_obj).T
+        self.vx = vx_c_out.reshape(steps, self.num_of_obj).T
+        self.vy = vy_c_out.reshape(steps, self.num_of_obj).T
 
         return None
+
+    @property
+    def R(self):
+        return np.sqrt(self.x**2 + self.y**2)
