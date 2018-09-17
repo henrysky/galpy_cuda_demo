@@ -51,10 +51,10 @@ class CUDAOrbits:
         cdef np.ndarray[np.float32_t, ndim=1] y_c = self.y
         cdef np.ndarray[np.float32_t, ndim=1] vx_c = self.vx
         cdef np.ndarray[np.float32_t, ndim=1] vy_c = self.vy
-        cdef np.ndarray[np.float32_t, ndim=1] x_c_out = np.ones_like(np.repeat(x_c, steps))
-        cdef np.ndarray[np.float32_t, ndim=1] y_c_out = np.ones_like(np.repeat(x_c, steps))
-        cdef np.ndarray[np.float32_t, ndim=1] vx_c_out = np.ones_like(np.repeat(x_c, steps))
-        cdef np.ndarray[np.float32_t, ndim=1] vy_c_out = np.ones_like(np.repeat(x_c, steps))
+        cdef np.ndarray[np.float32_t, ndim=1] x_c_out = np.tile(x_c, steps)
+        cdef np.ndarray[np.float32_t, ndim=1] y_c_out = np.tile(y_c, steps)
+        cdef np.ndarray[np.float32_t, ndim=1] vx_c_out = np.tile(vx_c, steps)
+        cdef np.ndarray[np.float32_t, ndim=1] vy_c_out = np.tile(vy_c, steps)
 
         # integrate on CUDA GPU
         integrate_euler_cuda(&x_c[0], &y_c[0], &vx_c[0], &vy_c[0], &x_c_out[0], &y_c_out[0], &vx_c_out[0], &vy_c_out[0],

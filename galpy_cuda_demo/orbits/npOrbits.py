@@ -39,8 +39,8 @@ class npOrbits:
         :param dt: delta t between steps
         :type dt: float
         """
-        M_s = 1  # solar mass
-        G = 39.5  # newtonian constant of gravitation
+        M_s = np.float32(1.)  # solar mass
+        G = np.float32(39.5)  # newtonian constant of gravitation
 
         R3 = lambda x, y: (x ** 2 + y ** 2) ** (3 / 2)
 
