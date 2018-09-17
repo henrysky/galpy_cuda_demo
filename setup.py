@@ -10,9 +10,13 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.rst')
     long_description = f.read()
 
 # nvcc compile first
-subprocess.run(
+nvcc_code = subprocess.call(
     f"nvcc -lib -o CUDAOrbits.{'lib' if sys.platform.startswith('win') else 'a'} galpy_cuda_demo/orbits/CUDAOrbits.cu",
     shell=sys.platform.startswith('win'))
+
+# check to make sure nvcc did successfully compiled the CUDA code
+if nvcc_code != 0:
+    raise OSError("NVCC compilation failed")
 
 ext_modules = [Extension('galpy_cuda_demo.orbits.CUDAOrbits',
                          libraries=["CUDAOrbits", "cudart"],
