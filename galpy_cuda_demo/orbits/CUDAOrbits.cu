@@ -5,12 +5,12 @@
 // for cuda profiler
 #include "cuda_profiler_api.h"
 
-#define M_s 1. // Solar mass
-#define G 39.5 // Gravitational constant Solar mass, AU
+#define M_s 1.f // Solar mass
+#define G 39.5f// Gravitational constant Solar mass, AU
 
 // single precision CUDA function to be called on GPU
 __device__ float potential_thingy(float x, float y) {
-    return G * M_s * x / powf((powf(x, 2) + powf(y, 2)), 3/2);
+    return G * M_s * x / powf((powf(x, 2) + powf(y, 2)), 1.5f);
 }
 
 // euler method for velocity component
@@ -73,6 +73,8 @@ extern "C" int integrate_euler_cuda(float *x, float *y, float *vx, float *vy, fl
         // as soon as any kernel finished computation, send the data back to CPU host
         cudaMemcpyAsync(&x_out[cstep*n], &dev_x_out[cstep*n], n * sizeof(float), cudaMemcpyDeviceToHost, stream[2]);
         cudaMemcpyAsync(&y_out[cstep*n], &dev_y_out[cstep*n], n * sizeof(float), cudaMemcpyDeviceToHost, stream[3]);
+        // make sure above all finished to start next time step because next time step depends on this step
+        cudaDeviceSynchronize();
         cstep += 1;
     }
 

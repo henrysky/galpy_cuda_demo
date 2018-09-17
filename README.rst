@@ -103,25 +103,37 @@ Unlike `galpy`_, ``Orbits`` here is an array of orbits and being integrated on G
     o_cpu.integrate(steps=5000, dt=0.01)
     print('CPU Time Spent: ', time.time() - start, 's')
 
-Performance Data
+Computational Performance
+==========================
+
+The testing machines is Windows 10 RS5 x64, Anaconda 5.2 python 3.6.4 x64
+
+As you can see NVIDIA GPU is only useful when you integrate a lot of objects because CUDA can integrate
+millions of objects at each time steps in parallel, but can not integrate millions of time steps for single object
+as expected (time steps must do sequentially).
+
+- Integrating 100,000 objects with 1,000 time steps
+
+    - NVIDIA GTX1060 6GB (GPU): ~ 1 seconds
+    - Intel i7-7700K (CPU): ~ 17 seconds
+
+- Integrating 1,000 objects with 100,000 time steps
+
+    - NVIDIA GTX1060 6GB (GPU): ~ 17 seconds
+    - Intel i7-7700K (CPU): ~ 17 seconds
+
+- Integrating 1,000,000 objects with 1,000 time steps
+
+    - NVIDIA GTX1060 6GB (GPU): ~ 8 seconds
+    - Intel i7-7700K (CPU): ~ 250 seconds
+
+To-Do list
 =================
 
-Windows 10 x64, Anaconda 5.2 python 3.6
-
-- Integrating 100,000 objects with 5,000 time steps
-
-    - GTX1060 6GB: ~ 7 seconds
-    - i7-7700K: ~ 150 seconds
-
-- Integrating 10,000 objects with 5,000 time steps
-
-    - GTX1060 6GB: ~ 0.5 seconds
-    - i7-7700K: ~ 8 seconds
-
-- Integrating 300,000 objects with 5,000 time steps
-
-    - GTX1060 6GB: ~ 23 seconds
-    - i7-7700K: ~ 520 seconds
+- Better Memory management on GPU
+- Error Handling
+- Accurancy of the Orbit Integration
+- galpy's orbit integration/integrator and potential
 
 Authors
 =========
