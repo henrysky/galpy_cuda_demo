@@ -18,7 +18,7 @@ Cross-platform checklist:
 ---------------------------------
 
 - Compatible NVIDIA graphics card (`List of supported GPU`_)
-- You have the latest NVIDIA driver and CUDA 9.2 installed as well as added to PATH (`Installation guide`_)
+- You have the latest NVIDIA driver and CUDA 10.0 installed as well as added to PATH (`Installation guide`_)
 - You have Python >=3.6 installed, Anaconda is recommended (`Download Anaconda`_)
 - You have downloaded this repository (``git clone https://github.com/henrysky/galpy_cuda_demo``)
 
@@ -29,15 +29,15 @@ Windows
 --------
 
 - You have supported Windows (`List of supported Windows`_)
-- You have the latest Visual Studio 2017 installed with C/C++ toolset v14.13 or Visual Studio 2015
+- You have the latest Visual Studio 2017 installed with C/C++ toolset v14.14 or Visual Studio 2015
 
 .. _List of supported Windows: https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#system-requirements
 
-Run Windows CMD under the respository, first we need to launch the right Visual compiler supported by CUDA 9.2
+Run Windows CMD under the respository, first we need to launch the right Visual compiler supported by CUDA 10.0
 
 .. code-block:: bash
 
-    %comspec% /k "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.13
+    %comspec% /k "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.14
 
 Install the python package by
 
@@ -86,22 +86,24 @@ Unlike `galpy`_, ``Orbits`` here is an array of orbits and being integrated on G
     import time
 
     num_obj = 10000  # total number of object to create and integrate
-    x = np.random.normal(3, 0.1, num_obj)  # AU
-    y = np.random.normal(3, 0.1, num_obj)  # AU
-    vx = np.random.normal(20, 1, num_obj)  # AU/yr
-    vy = np.random.normal(20, 1, num_obj)  # AU/yr
+    x = np.random.normal(10, 2, num_obj)  # AU
+    y = np.random.normal(10, 2, num_obj)  # AU
+    vx = np.random.normal(3, 1, num_obj)  # AU/yr
+    vy = np.random.normal(3, 1, num_obj)  # AU/yr
 
     # create cuda orbits and integrate
     o_cuda = Orbits(x=x, y=y, vx=vx, vy=vy, mode='cuda')
     start = time.time()
-    o_cuda.integrate(steps=5000, dt=0.01)
+    o_cuda.integrate(steps=1000, dt=0.01)
     print('CUDA Time Spent: ', time.time() - start, 's')
 
     # create numpy cpu orbits and integrate
     o_cpu = Orbits(x=x, y=y, vx=vx, vy=vy, mode='cpu')
     start = time.time()
-    o_cpu.integrate(steps=5000, dt=0.01)
+    o_cpu.integrate(steps=1000, dt=0.01)
     print('CPU Time Spent: ', time.time() - start, 's')
+
+    print('CUDA orbits equal CPU orbits at 0.01% level: ', np.all(np.isclose(o_cpu.R, o_cuda.R)))
 
 Computational Performance
 ==========================
