@@ -10,13 +10,21 @@ with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.rst')
     long_description = f.read()
 
 # nvcc compile first
-nvcc_code = subprocess.call(
-    f"nvcc -lib -o CUDAOrbits.{'lib' if sys.platform.startswith('win') else 'a'} galpy_cuda_demo/orbits/CUDAOrbits.cu",
-    shell=sys.platform.startswith('win'))
+if sys.platform.startswith('win'):
+    nvcc_code = subprocess.call(
+        f"nvcc -lib -o CUDAOrbits.lib galpy_cuda_demo/orbits/CUDAOrbits.cu", shell=True)
+else:
+    nvcc_code = subprocess.call(
+        [f"nvcc -lib -Xcompiler -fPIC -o libCUDAOrbits.so galpy_cuda_demo/orbits/CUDAOrbits.cu"])
 
 # check to make sure nvcc did successfully compiled the CUDA code
 if nvcc_code != 0:
     raise OSError("NVCC compilation failed")
+
+if sys.platform.startswith('win'):
+    lib64 = os.path.join(os.getenv("CUDA_PATH"), "lib", "x64")
+else:
+    lib64 = os.path.join(os.getenv("CUDA_PATH"), "lib64")
 
 ext_modules = [Extension('galpy_cuda_demo.orbits.CUDAOrbits',
                          libraries=["CUDAOrbits", "cudart"],
@@ -24,7 +32,7 @@ ext_modules = [Extension('galpy_cuda_demo.orbits.CUDAOrbits',
                          extra_compile_args=[],
                          extra_link_args=[],
                          # hardcode x64 because CUDA will drop x86 support anyway
-                         library_dirs=[os.path.join(os.getenv("CUDA_PATH"), "lib", "x64")],
+                         library_dirs=[lib64],
                          include_dirs=[numpy.get_include(), os.path.join(os.getenv("CUDA_PATH"), "include")],
                          sources=['galpy_cuda_demo/orbits/CUDAOrbits.pyx'],
                          ),

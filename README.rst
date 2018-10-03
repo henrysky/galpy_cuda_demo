@@ -18,7 +18,8 @@ Cross-platform checklist:
 ---------------------------------
 
 - Compatible NVIDIA graphics card (`List of supported GPU`_)
-- You have the latest NVIDIA driver and CUDA 10.0 installed as well as added to PATH (`Installation guide`_)
+- You have the latest NVIDIA driver and CUDA 10.0 installed
+- You have CUDA 10.0 path added to environment variable (e.g. for Windows ``C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0`` or Linux ``/usr/local/cuda-10.0/bin/nvcc``)
 - You have Python >=3.6 installed, Anaconda is recommended (`Download Anaconda`_)
 - You have downloaded this repository (``git clone https://github.com/henrysky/galpy_cuda_demo``)
 
@@ -51,8 +52,8 @@ To build wheels by
 
     python setup.py sdist bdist_wheel
 
-Linux (Not tested yet)
-----------------------------
+Linux
+--------
 
 - You have supported Linux (`List of supported Linux`_)
 - You have supported GCC compiler (`List of supported GCC compiler`_ depending on your Linux distro)
