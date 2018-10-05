@@ -19,7 +19,7 @@ Cross-platform checklist:
 
 - Compatible NVIDIA graphics card (`List of supported GPU`_)
 - You have the latest NVIDIA driver and CUDA 10.0 installed
-- You have CUDA 10.0 path added to environment variable (e.g. for Windows ``C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0`` or Linux ``/usr/local/cuda-10.0/bin/nvcc``)
+- You have CUDA 10.0 path added to environment variable ``CUDA_PATH`` (e.g. for Windows ``C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0`` or Linux ``/usr/local/cuda-10.0/``)
 - You have Python >=3.6 installed, Anaconda is recommended (`Download Anaconda`_)
 - You have downloaded this repository (``git clone https://github.com/henrysky/galpy_cuda_demo``)
 
@@ -109,7 +109,7 @@ Unlike `galpy`_, ``Orbits`` here is an array of orbits and being integrated on G
 Computational Performance
 ==========================
 
-The testing machines is Windows 10 RS5 x64, Anaconda 5.2 python 3.6.4 x64
+The testing machines is Windows 10 RS5 x64, Anaconda 5.3 python 3.7.0 x64
 
 As you can see NVIDIA GPU is only useful when you integrate a lot of objects because CUDA can integrate
 millions of objects at each time steps in parallel, but can not integrate millions of time steps for single object
