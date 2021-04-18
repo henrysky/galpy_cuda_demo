@@ -24,17 +24,25 @@ jobs:
           cuda: ${{ matrix.cuda_ver }}
           method: network
           subPackages: '["nvcc"]'
-      - name: setup msvc
+      - name: setup msvc and build wheels
         if: ${{ matrix.os == 'windows-latest' }}
+        shell: cmd
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           ./build.bat
-      - name: Build wheels
+          cl --version
+          echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
+          echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+          nvcc -V
+          pip install numpy cython wheel
+          python setup.py develop
+          python setup.py sdist bdist_wheel
+      - name: just build wheels
+        if: ${{ matrix.os != 'windows-latest' }}
         run: |
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
           echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
           nvcc -V
-          cl --version
           pip install numpy cython wheel
           python setup.py develop
           python setup.py sdist bdist_wheel
