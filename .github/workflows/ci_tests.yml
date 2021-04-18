@@ -22,12 +22,14 @@ jobs:
         id: cuda-toolkit
         with:
           cuda: ${{ matrix.cuda_ver }}
+          method: network
+          subPackages: '["nvcc"]'
 
       - name: Build wheels
         run: |
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
           echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
           nvcc -V
-          pip install numpy
+          pip install numpy cython
           python setup.py develop
           python setup.py sdist bdist_wheel
