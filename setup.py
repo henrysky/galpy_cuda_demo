@@ -47,6 +47,7 @@ setup(
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Astronomy'],
     packages=find_packages(),
+    install_requires=['numpy'],
     python_requires='>=3.6',
     url='https://github.com/henrysky/galpy_cuda_demo',
     license='MIT',
