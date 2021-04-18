@@ -1,0 +1,36 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+  test:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"  # respect [ci skip] commit
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { cuda_ver: '10.2' }
+          - { cuda_ver: '11.2' }
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Set up CUDA Toolkit
+        uses: Jimver/cuda-toolkit@v0.2.1
+        id: cuda-toolkit
+        with:
+          cuda: ${{ matrix.cuda_ver }}
+
+      - name: Build wheels
+        run: |
+          echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
+          echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+          nvcc -V
+          python setup.py sdist bdist_wheel
