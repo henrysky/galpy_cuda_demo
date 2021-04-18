@@ -27,7 +27,7 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
       - name: setup msvc
-        if: ${{ matrix.os == windows-latest}}
+        if: ${{ matrix.os == "windows-latest" }}
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           ./build.bat
