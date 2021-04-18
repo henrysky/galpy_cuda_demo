@@ -24,8 +24,6 @@ jobs:
           cuda: ${{ matrix.cuda_ver }}
           method: network
           subPackages: '["nvcc"]'
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
       - name: setup msvc
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
