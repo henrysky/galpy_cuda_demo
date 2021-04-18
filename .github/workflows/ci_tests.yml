@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        cuda_ver: ['11.2.2', '11.2.2']
+        cuda_ver: ['11.2.1', '11.2.2']
     if: "!contains(github.event.head_commit.message, '[ci skip]')"  # respect [ci skip] commit
     runs-on: ${{ matrix.os }}
     steps:
