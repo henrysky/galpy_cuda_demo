@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     strategy:
-      ail-fast: false
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         cuda_ver: ['10.2', '11.2']
