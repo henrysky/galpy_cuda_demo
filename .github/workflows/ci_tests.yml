@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        cuda_ver: ['10.2.89', '11.2.2']
+        cuda_ver: ['11.2.2', '11.2.2']
     if: "!contains(github.event.head_commit.message, '[ci skip]')"  # respect [ci skip] commit
     runs-on: ${{ matrix.os }}
     steps:
@@ -24,12 +24,19 @@ jobs:
           cuda: ${{ matrix.cuda_ver }}
           method: network
           subPackages: '["nvcc"]'
-
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: setup msvc
+        if: ${{ matrix.os == windows-latest}}
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          ./build.bat
       - name: Build wheels
         run: |
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
           echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
           nvcc -V
+          cl --version
           pip install numpy cython wheel
           python setup.py develop
           python setup.py sdist bdist_wheel
